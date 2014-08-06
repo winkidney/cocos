@@ -17,6 +17,13 @@ Programming Guide
    programming_guide/index
 
 
+.. toctree::
+  :maxdepth: 1
+  
+  
+  programming_guide/chs_translation/index  
+
+
 API Reference
 =============
 
