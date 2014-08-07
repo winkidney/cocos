@@ -1,96 +1,101 @@
-Installation, Dependencies and Compatibility 
+安装，依赖和兼容性
 ============================================
 
 .. contents::
     :local:
 
-Dependencies
+依赖
 ^^^^^^^^^^^^
 
-most of functionality
+核心功能
 ______________________
 
     + six https://pypi.python.org/pypi/six/
     + pyglet http://code.google.com/p/pyglet/
 
-particles support
+粒子系统支持
 _________________
 
     + numpy www.numpy.org
 
-audio and video support by AVbin
+基于AVbin的音频/视频支持
 ________________________________
 
     + AVbin http://avbin.github.io/AVbin/Home/Home.html
     
-audio support by SDL
+基于SDL的音频支持
 ____________________
 
-    + in Windows, pygame http://www.pygame.org
-    + in unix-like OSes libraries sdl 1.2 and sdl-mixer 1.2; in debian/ubuntu their packages are libsdl1.2 and libsdl-mixer1.2
-    + in Mac, theres no confirmed info. Should be similar to unix.
+    + Windows下，需要安装 pygame http://www.pygame.org
+    + unix系系统需要安装如下软件包：  sdl 1.2 and sdl-mixer 1.2; in debian/ubuntu their packages are libsdl1.2 and libsdl-mixer1.2
+    + Mac上没有确定方案，但类似于unix系
 
 
-What explicit dependencies are declared in the setup.py ?
-six, pyglet from hg repository
+setup.py中明确声明了哪些依赖？
+six和pyglet包
         
 
-Compatibility
+兼容性
 ^^^^^^^^^^^^^
 
-Compatibility notes at the time of writing, March 2014
+兼容性笔记 -  2014年四月
 
-    + python : cocos needs python 2.6, 2.7 or 3.3+
-      The cocos codebase has direct support for 2.x and 3.x, so no need to run 2to3  
+    + python : cocos要求python版本为 2.6, 2.7 或 3.3+
+      cocos代码库直接支持2.x和3.x，因此不需要运行2to3脚本
 
-    + pyglet : pyglet 1.2 or better
+    + pyglet : pyglet 1.2 或更高
 
-          + In pypi the last pyglet is 1.1.4, from 2009
-          + In pyglet's googlecode downloads the last is an old 1.2alpha1 (2012)
-          + It is recomended to use pyglet from repo at a revision near the tip.
-          + For reference, this cocos release was tested with revision c7f948a848cb
-            of pyglet, dated 2014 03 20
+          + pypi 中最新的 pyglet 是 1.1.4（更新于 2009
+          + 在 pyglet 的 googlecode 项目中可下载的最新版本是比较老的 1.2alpha1 (2012)
+          + 推荐使用pyglet项目的最新修正版本
+          + 仅供参考： 这个cocos发行版在pyglet的 c7f948a848cb
+            pyglet上测试通过, 测试时间为 2014 03 20
           
 
-Installing
+安装
 ^^^^^^^^^^
 
-Have a modern setuptools or pip installed.
+你必须已经安装现代的setuptools或者pip。
 
-While::
+使用::
 
     easy_install cocos2d
 
-or::
+或者::
 
     pip install cocos2d --process-dependency-links
 
-should work, you will miss the docs and code samples. Its is therefore recommended to
+应该是工作的, 不过这种安装将没有样例和文档. 因此还是推荐使用官方的包进行安装
 
-    + download cocos2d-0.6.0.zip from https://pypi.python.org/pypi/cocos2d/
-    + decompress to a convenient location, the top dir will be cocos2d-0.6.0
-    + the html docs will be in cocos2d-0.6.0/doc/html
-    + useful code samples will be in cocos2d-0.6.0/test, cocos2d-0.6.0/samples, cocos2d-0.6.0/utest
-    + install by::
+    + 下载 cocos2d-0.6.0.zip from https://pypi.python.org/pypi/cocos2d/
+    + 解压到任意目录，顶级目录应该是 cocos2d-0.6.0
+    + html格式的文档放在 cocos2d-0.6.0/doc/html
+    + 代码示例放在 cocos2d-0.6.0/test, cocos2d-0.6.0/samples, cocos2d-0.6.0/utest
+    + 你可以这样安装::
 
         cd cocos2d-0.6.0
         setup.py install
 
-      or alternatively by pointing that directory from a .pth or PYTHONPATH
-    + All of cocos should be usable now, with the possible exceptions
+      或者通过一个 .pth 文件指定包路径，放置到 PYTHONPATH内也可以
+    + 现在，所有的cocos代码应该都可以运行了,不过如下模块可能遇到问题
 
-        - cocos particles
-        - SDL audio backend
-        - AVBin (pyglet) audio-video backend 
+        - cocos 粒子系统
+        - SDL 音频后端
+        - AVBin (pyglet) 音/视频后端 
 
-If you want to add these, look at the dependencies section.
+如果你想添加这些支持，请阅读“依赖”部分。
 
-Using PYTHONPATH or .pth
-^^^^^^^^^^^^^^^^^^^^^^^^
+使用PYTHONPATH或者.pth文件
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+同时在python 3.x和python 2.x 中通过.pth或者PYTHONPATH指定同一个cocos配置是很安全的; 同一个cocos可以被两个版本的python指向。
 
 It is safe to point a checkout of cocos from a .pth or PYTHONPATH both
- in python 2.x and 3.x; the same checkout can be pointed at the same time from both pythons.
+  in python 2.x and 3.x; the same checkout can be pointed at the same time from both pythons.
+
+记住，pyglet已经在安装的时候运行了2to3以兼容python3, 所以一个安装在python 2.x中的pyglet将不会兼容python3
 
 Remember that pyglet does python 3 compatibility by running 2to3 at install time, so while
 a pyglet checkout can be pointed from a .pth or PYTHONPATH in python 2.x,
 that will not work for python 3.
+

@@ -1,10 +1,7 @@
-Writing a cocos2d application
+编写一个基本的cocos2d应用
 =============================
 
-Getting started with a new library or framework can be daunting, especially
-when presented with a large amount of reference material to read.  This
-chapter gives a very quick introduction to cocos2d without covering any of the
-details.
+开始使用一个新框架会变得十分困难，尤其是有太多的参考材料需要阅读的时候。这一章将会对cocos2d进行一个非常简洁介绍，包括如下内容：
 
 .. contents::
     :local:
@@ -12,63 +9,60 @@ details.
 Hello, World
 ------------
 
-We'll begin with the requisite "Hello, World" introduction.  This program will
-open a window with some text in it and wait to be closed.  You can find the
-entire program in the `samples/hello_world.py` file.
+我们会从必要的“Hello,World”开始介绍。这个程序将会打开一个包含文字的窗口，这个窗口等待你的关闭。你可以在 `/samples/hello_world.py` 文件中找到整个程序。
 
 .. image:: hello_world.py.png
 
 
-Begin by importing the cocos package::
+我们先导入cocos包::
 
     import cocos
 
-Subclass a `Layer`  and define the logic of you program here::
+子类化 `Layer`  类并在此声明程序逻辑::
 
     class HelloWorld(cocos.layer.Layer):
 
-Always call ``super`` in the constructor::
+记得在构造器里调用 ``super`` 方法::
 
     def __init__(self):
         super( HelloWorld, self ).__init__()
 
-To display the text, we'll create a `Label`.  Keyword arguments are used
-to set the font, position and alignment of the label::
+为了显示文字，你必须创建一个 `Label` 实例.  关键字参数分别设置了标签对象的字体，
+显示位置，对齐方式::
 
     label = cocos.text.Label('Hello, world',
                               font_name='Times New Roman',
                               font_size=32,
                               anchor_x='center', anchor_y='center')
 
-The label position will be the center of the screen::
+文本标签将显示在屏幕中间::
 
     label.position = 320,240
 
-Since `Label` is a subclass of `CocosNode` it can be added
-as a child. All `CocosNode` objects know how to render itself, perform actions
-and transformations.
-To add it as a layer's child, use the `CocosNode.add` method::
+因为 `Label` 是 `CocosNode` 的子类，所以它可以作为孩子（child）被添加。
+所有的 `CocosNode` 类型的对象都知道如何渲染自己，执行动作（actions）和产生变换。
+使用  `CocosNode.add` 方法来将它添加为一个 `Layer` 对象的孩子（注：Layer也是CocosNode的子类）::
 
         self.add( label )
 
-After defining the ``HelloWorld`` class, we need to initialize and create a window.
-To do this, we initialize the `Director`::
+完成  ``HelloWorld``  类的声明之后，我们接下来需要初始化并创建一个窗口对象。
+为了达到这个目的，我们初始化一个导演对象 `Director`::
 
     cocos.director.director.init()
 
-Then we create a ``HelloWorld`` instance::
+然后我们创建一个 ``HelloWorld`` 实例::
 
     hello_layer = HelloWorld ()
 
-Then we create an `Scene` that contains the ``HelloWorld`` layer as a child::
+接下来我们再创建一个场景对象 `Scene` 将  ``HelloWorld`` 实例作为孩子包含其中::
 
     main_scene = cocos.scene.Scene (hello_layer)
 
-And finally we run the scene::
+最后，我们运行场景对象::
 
     cocos.director.director.run (main_scene)
 
-A shorter way to write the last 3 statements is this::
+上面三行也可以写成一行::
 
     #cocos.director.director.run( cocos.scene.Scene( HelloWorld() ) )
 
@@ -78,93 +72,90 @@ Hello Actions
 
 .. figure:: hello_world_actions.py.png
 
-This example is very similar to example #1, with the difference that it introduces
-us to the world of actions.
-An action is like an order. You can tell **any** `CocosNode` object to execute an
-action.
-You can find the entire program in the `samples/hello_world_actions.py` file.
+这个例子和第一个例子非常相似，不同的地方在于这个例子向你展示actions（动作）的世界。一个 “动作” 就像一个指令。你可以让
+ **任何**  `CocosNode` 对象执行一个动作（action）
+ 
+完整的程序可以在 `samples/hello_world_actions.py` 文件里找到.
 
 
-Like in our previous example, we import the cocos package::
+就像我们之前的例子一样，我们先导入cocos包::
 
         import cocos
 
-If you're going to use several actions, you can import all
-the available actions into the namespace with this import::
+如果你打算使用多个action，你可以这样从名称空间里导入所有可用action::
 
     from cocos.actions import *
 
-We subclass `ColorLayer` to have a background color, and then
-we call super() with a blueish color::
+我们子类化 `ColorLayer` 来使用有背景色的层, 
+然后我们调用super()方法来设定背景为蓝色::
 
     class HelloWorld(cocos.layer.ColorLayer):
         def __init__(self):
             # blueish color
             super( HelloWorld, self ).__init__( 64,64,224,255)
 
-As in the previous example, we create and add a label::
+前一个例子中，我们创建并添加了一个标签（label）::
 
     label = cocos.text.Label('Hello, World!',
         font_name='Times New Roman',
         font_size=32,
         anchor_x='center', anchor_y='center')
 
-    # set the label in the center of the screen
+    # 让标签显示在屏幕中间
     label.position = 320,240
     self.add( label )
 
-In this example we also create and add an sprite as a child. In cocos2d
-sprites are `Sprite` objects::
+在这个实例里我们也创建一个精灵并将其添加为一个孩子。
+在cocos2d当中精灵是 `Sprite` 对象::
 
     sprite = cocos.sprite.Sprite('grossini.png')
 
-We place the sprite in the center of the screen. Default position is (0,0)::
+我们将精灵放置在屏幕中间。默认位置是 (0,0)::
 
     sprite.position = 320,240
 
-We set the scale attribute to 3. This means that our sprite will be 3 times bigger.
-The default scale attribute is 1::
+我们将缩放属性设置为3。这也就意味着我妈的精灵将变为三倍大小。
+默认的缩放属性值是1::
 
     sprite.scale = 3
 
-We add the sprite as a child but on top of the label by setting the z-value to 1, since
-the default z-value is 0::
+我们将精灵添加为父层级的孩子，通过设置z数值，我们将精灵放在了标签的上面，
+因为默认的z数值是0::
 
     self.add( sprite, z=1 )
 
-We create a `ScaleBy` action. It will scale 3 times the object in 2 seconds::
+我们创建了一个 `ScaleBy` 动作，它将会在两秒时间内将精灵缩放三次::
 
     scale = ScaleBy(3, duration=2)
 
-We tell the label to:
- 1. scale 3 times in 2 seconds
- 2. then to scale back 3 times in 2 seconds
- 3. and we repeat these 2 actions forever
+我们告诉label执行如下动作:
+ 1. 两秒的时间内缩放三次
+ 2. 接下来在两秒内缩放回去
+ 3. 最后我们无限循环这两个动作
 
-Notice that the '+' operator is the `Sequence` action::
+注意 '+' 操作符是 `Sequence` （序列）动作::
 
     label.do( Repeat( scale + Reverse( scale) ) )
 
-And we tell the sprite to do the same actions but starting with the 'scale back' action::
-
     sprite.do( Repeat( Reverse(scale) + scale ) )
 
-Then we initialize the director, like in the previous example::
+然后我们让精灵执行相同的动作，但是从 `反向缩放` 开始::
+接着我们初始化Director，就像我们前一个例子里做的::
 
     cocos.director.director.init()
     hello_layer = HelloWorld ()
 
-And... we tell the `Layer` (yes, all `CocosNode` objects can execute actions) to
-execute a `RotateBy` action of 360 degrees in 10 seconds::
+然后，我们让 `Layer` （层）(如你所见, 所有的 `CocosNode` 对象都可以执行actions) 
+在十秒内执行 360度的`RotateBy`  动作::
 
     hello_layer.do( RotateBy(360, duration=10) )
 
-Finally we start the execution::
+最后我们开始执行::
 
-    # A scene that contains the layer hello_layer
+    # 一个包含hello_layer的场景
     main_scene = cocos.scene.Scene (hello_layer)
 
-    # And now, start the application, starting with main_scene
+    # 现在，运行应用以载入主场景
     cocos.director.director.run (main_scene)
 
 

@@ -5,11 +5,13 @@ cocos2d 编程指南
 .. figure:: coco.png
 
 cocos2d 编程指南为你使用cocos2d编写应用程序提供深入的文档。这里谈到的许多话题都引用了单独提供的《cocos2d API 文档》里的内容。
+
 The cocos2d Programming Guide provides in-depth documentation for writing
 applications that use cocos2d.  Many topics described here reference the cocos2d 
 API reference, provided separately.
 
 如果你是第一次阅读cocos2d相关，我们建议你从 :doc:`quickstart` 开始。
+
 If this is your first time reading about cocos2d, we suggest you start at :doc:`quickstart` .
 
 .. toctree::

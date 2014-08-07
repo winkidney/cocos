@@ -1,8 +1,28 @@
-Introduction
+简介
 ============
+
+cocos2d 是一个用来构建2D游戏，demo，和别的 图形/交互 应用的框架。
 
 cocos2d is a framework for building 2D games, demos, and other
 graphical/interactive applications.
+
+cocos2d 通过如下方式简化了游戏开发：
+  - **流程控制：** 通过场景切换进行快捷方便的流程控制。
+  - **精灵：** 快速简洁的精灵（sprites）。
+  - **行为（actions）：** 只需要告诉精灵你想做什么就可以了。预置了移动，旋转，缩放等这些可组合的行为。
+  - **特效：** 预置了波动，转动，镜头等特效。
+  - **粒子系统：** 爆炸，烟花，流星，烟雾等等预置粒子效果。
+  - **瓦片地图：** 支持矩形和六边形瓦片地图。
+  - **碰撞检测：** 纯python实现的基础碰撞检测支持。
+  - **过渡（场景切换）：** 使用多种模式从一个场景切换到另一个场景。 
+  - **菜单：** 内建的菜单类。
+  - **文字渲染** 
+  - **文档：** 编程指南 + API文档 + 大量的样例让你轻松明白怎么使用cocos2d。
+  - **内建的python解释器：** 为DEBUG提供工具。
+  - **BSD 授权** 无需顾虑太多， just use it！
+  - **基于pyglet** 没有额外依赖。
+  - **基于OPENGL** 硬件加速。
+
 
 cocos2d simplifies the game development in these areas:
     - **Flow control:** Manage the flow control between different scenes in an easy way
