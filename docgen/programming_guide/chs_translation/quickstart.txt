@@ -159,24 +159,24 @@ Hello Actions
     cocos.director.director.run (main_scene)
 
 
-Handling Events
+响应事件
 ---------------
 
-All our previous examples are non-interactive. They display something, but do not respond to user input (except for quitting when you press **ESC** or close the window).
-Cocos obtains inputs by listening to director.window events, and conveniently cocos.layer can automatically listen to director.window events: in your layer subclass set the is_event_handler class member to True and cocos will take care.
+之前所有的例子都是没有交互的。他们都显示内容，不响应用户输入 (除了你按 **ESC** 或者直接关闭窗口导致退出之外).
+Cocos通过监听 director.window events 获取事件, 而且 cocos.layer 能方便的自动监听 director.window events: 你只需要在你的子类里将 is_event_handler 成员变量设置为 True ，剩下的工作cocos会帮你完成.
 
-In this section we will build step by step the demo provided in `samples/handling_events.py`; this is a very simple cocos app which shows which keys are pressed, and reacts to mouse motion and clicks. Run the app before reading on te get a clearer idea of what we are trying to build.
+这个部分我们会一步一步构建 `samples/handling_events.py` 中包含的程序; 这个简单的应用将显示你按了哪些按键，鼠标如何移动，何时点击。在继续读下去之前，建议你先运行一下这个应用，了解下我们要构建的是一个什么样的东西。
 
 .. figure:: event_demo.py.png
 
-This demo has a scene with two layers; one shows which keys are currently pressed (none, one, or maybe several at the same time), the other one shows text with the mouse position, and clicking moves the text.
+这个DEMO有两个层; 一个用来显示当前按键 (没有按键，按下一个, 或者同时按下几个按键), 另一个层显示鼠标坐标，点击并跟随鼠标移动.
 
-We start defining the KeyDisplay layer class. As always, we put some initialization on ``__init__`` and the code for displaying it in step::
+我们先声明 KeyDisplay 层。跟之前一样，我们把一些初始化代码放在  ``__init__`` 方法里::
 
         class KeyDisplay(cocos.layer.Layer):
 
-            # If you want that your layer receives director.window events
-            # you must set this variable to 'True'
+            # 如果你想要你的层对象监听 director.window events
+            # 你必须设置这个变量为 'True'
             is_event_handler = True
 
             def __init__(self):
@@ -185,7 +185,7 @@ We start defining the KeyDisplay layer class. As always, we put some initializat
 
                 self.text = cocos.text.Label("", x=100, y=280 )
 
-                # To keep track of which keys are pressed:
+                # 跟踪哪一个按键被按下了
                 self.keys_pressed = set()
                 self.update_text()
                 self.add(self.text)
@@ -196,26 +196,28 @@ We start defining the KeyDisplay layer class. As always, we put some initializat
                 # Update self.text
                 self.text.element.text = text
 
-This class defines a key_pressed set, which should be the set of keys pressed at any time. However, this code as it is still does nothing. We need to tell this layer to update this set when a key is pressed or released. In other words, we need to add event handlers to the layer. Adding event handlers to a layer is just a matter of adding methods to it called on_<event name>. The two events that interest us now are ``on_key_press`` and ``on_key_release``::
+这个类声明了一个按下的键的集合，这个集合记录了某个时刻按下的所有按键。尽管如此，这些代码依然什么都没做。我们需要让层在按键释放的时候自动更新这个集合。
+换句话说，我们要给这个层增加事件响应。增加事件响应的具体方法是为类增加一个 on_<event name> 的方法。
+现在我们感兴趣的方法是``on_key_press`` 和 ``on_key_release``::
 
         def on_key_press (self, key, modifiers):
-            """This function is called when a key is pressed.
-            'key' is a constant indicating which key was pressed.
-            'modifiers' is a bitwise or of several constants indicating which
-                modifiers are active at the time of the press (ctrl, shift, capslock, etc.)
+            """方法会在按键按下的时候释放
+            'key' 是用来判断哪个键被按下的变量。
+            'modifiers' 是一个按位变量，标识了按键的同时哪个
+            控制按键被按下了(ctrl, shift, capslock,等等)
             """
 
             self.keys_pressed.add (key)
             self.update_text()
 
         def on_key_release (self, key, modifiers):
-            """This function is called when a key is released.
+            """这个方法在按键释放的时候被调用。
 
-            'key' is a constant indicating which key was pressed.
-            'modifiers' is a bitwise or of several constants indicating which
-                modifiers are active at the time of the press (ctrl, shift, capslock, etc.)
+            'key' 是用来判断哪个键被按下的变量。
+            'modifiers' 是一个按位变量，标识了按键的同时哪个
+            控制按键被按下了(ctrl, shift, capslock, etc.)
 
-            Constants are the ones from pyglet.window.key
+            这些变量都来自于 pyglet.window.key
             """
 
             self.keys_pressed.remove (key)
@@ -224,16 +226,17 @@ This class defines a key_pressed set, which should be the set of keys pressed at
         def update_text(self):
             key_names = [pyglet.window.key.symbol_string (k) for k in self.keys_pressed]
             text = 'Keys: '+','.join (key_names)
-            # Update self.text
+            # 更新 self.text
             self.text.element.text = text
 
-With that code, the layer is now fully working. You can press and release keys or key combinations, and you will se how the display is updated telling you which keys are pressed at any time.
 
-Handling mouse input is similar. You have three events of interest: on_mouse_press, on_mouse_motion and on_mouse_drag. With that, we can define our layer::
+写好这些，这个层已经可以正常工作了。现在按下然后释放按键或者组合键，你就可以看见屏幕上更新你在某个时刻的所有按键了。
+
+响应鼠标输入也是类似的。现在我们感兴趣的事件有三个：on_mouse_press, on_mouse_motion and on_mouse_drag.有了这些数据，我们就可以声明的我我们的层了::
 
         class MouseDisplay(cocos.layer.Layer):
 
-            is_event_handler = True     #: enable director.window events
+            is_event_handler = True     #: 启用 director.window events
 
             def __init__(self):
                 super( MouseDisplay, self ).__init__()
@@ -249,33 +252,30 @@ Handling mouse input is similar. You have three events of interest: on_mouse_pre
                 self.text.element.x = self.posx
                 self.text.element.y = self.posy
 
-And then add event handlers to update the text when the mouse is moved, and change the text position when any button is clicked::
+接下来添加鼠标移动改变文字的事件响应，当按下鼠标的时候改变文字坐标。::
 
     def on_mouse_motion (self, x, y, dx, dy):
-        """Called when the mouse moves over the app window with no button pressed
+        """鼠标移动（没有按下鼠标）的时候调用这个方法
         
-        (x, y) are the physical coordinates of the mouse
-        (dx, dy) is the distance vector covered by the mouse pointer since the
-          last call.
+        (x, y) 是鼠标的物理坐标
+        (dx, dy) 是上一次调用和这一次调用的坐标之差
         """
         self.update_text (x, y)
 
     def on_mouse_drag (self, x, y, dx, dy, buttons, modifiers):
-        """Called when the mouse moves over the app window with some button(s) pressed
+        """鼠标拖动（按下了一个或多个鼠标按钮）的时候调用这个方法
         
-        (x, y) are the physical coordinates of the mouse
-        (dx, dy) is the distance vector covered by the mouse pointer since the
-          last call.
-        'buttons' is a bitwise or of pyglet.window.mouse constants LEFT, MIDDLE, RIGHT
-        'modifiers' is a bitwise or of pyglet.window.key modifier constants
-           (values like 'SHIFT', 'OPTION', 'ALT')
+        (x, y) 是鼠标的物理坐标
+        (dx, dy) 是上一次调用和这一次调用的坐标之差
+        'buttons' 是一个 pyglet.window.mouse 值为 LEFT, MIDDLE, RIGHT 的位变量
+        'modifiers' 是一个 pyglet.window.key  控制键位变量(比如 'SHIFT', 'OPTION', 'ALT'等等)
         """
         self.update_text (x, y)
 
     def on_mouse_press (self, x, y, buttons, modifiers):
-        """This function is called when any mouse button is pressed
+        """函数在鼠标有按钮按下的时候调用
 
-        (x, y) are the physical coordinates of the mouse
+        (x, y) 是鼠标的物理坐标
         'buttons' is a bitwise or of pyglet.window.mouse constants LEFT, MIDDLE, RIGHT
         'modifiers' is a bitwise or of pyglet.window.key modifier constants
            (values like 'SHIFT', 'OPTION', 'ALT')
