@@ -276,64 +276,61 @@ Cocos通过监听 director.window events 获取事件, 而且 cocos.layer 能方
         """函数在鼠标有按钮按下的时候调用
 
         (x, y) 是鼠标的物理坐标
-        'buttons' is a bitwise or of pyglet.window.mouse constants LEFT, MIDDLE, RIGHT
-        'modifiers' is a bitwise or of pyglet.window.key modifier constants
-           (values like 'SHIFT', 'OPTION', 'ALT')
+        'buttons' 是 pyglet.window.mouse 中的一个位变量,包含 LEFT, MIDDLE, RIGHT三个值.
+        'modifiers' 是一个 pyglet.window.key  控制键位变量(比如 'SHIFT', 'OPTION', 'ALT'等等)
         """
         self.posx, self.posy = director.get_virtual_coordinates (x, y)
         self.update_text (x,y)
 
-The only thing a bit unusual here is the call to `director.get_virtual_coordinates` (x, y). As explained in the example before, cocos has two coordinates systems, a physical one and a virtual one. The mouse event handlers receive their arguments from pyglet in physical coordinates. If you want to map that to virtual coordinates, you need to use the director.get_virtual_coordinates method, which does the correct mapping. If you put instead ``self.posx``, ``self.posy = x,y`` in the on_mouse_press handler above, you will see that the app seems to work, but if you resize the window, the clicks will move the text to the wrong place.
+这里和前面唯一有少许不同的地方是对 `director.get_virtual_coordinates` (x, y)的调用. 就像我们前面说的一样,cocos有两个坐标系统,一个物理坐标系统,一个虚拟坐标系统. 鼠标事件响应从pyglet接收物理坐标信息. 如果你想要映射到虚拟坐标, 你需要使用 director.get_virtual_coordinates 方法来做正确的映射, . 如果你在on_mouse_press handler使用 ``self.posx``, ``self.posy = x,y`` 作为替代, 你会看到和前面的方法一致的表现, 但如果你改变窗口大小, 点击就会将文字移动到错误的坐标.
 
-For completneddes, they are other mouse events that can be of interest:
-	on_mouse_release : called when a button is released
-	on_mouse_scroll : called when the mouse wheel moved
-	on_mouse_leave : called when the mouse cursor goes out of the window
-	on_mouse_enter : called when the mouse cursor enters the window
+补充以下,还有其他的有趣的鼠标事件:
+	on_mouse_release : 鼠标按键被释放的时候触发.
+	on_mouse_scroll : 鼠标滚轮移动时被触发.
+	on_mouse_leave : 光标移出窗口范围时触发.
+	on_mouse_enter : 光标进入窗口范围被触发.
 
-The demo does not have much more code, just creating a scene with these two layers and running it::
+Demo没有更多代码, 你只需要创建一个包含这两个layer的scene就可以运行了::
 
         director.init(resizable=True)
-        # Run a scene with our event displayers:
+        # 用一个scene运行我们的事件监视器:
         director.run( cocos.scene.Scene( KeyDisplay(), MouseDisplay() ) )
 
-You can now play to the demo and change it. Some things you can try are:
+现在你可以玩一下这个demo或者改改它,比如下面这些东西:
 
- * Change the on_mouse_press handler and remove the mapping to virtual coordinates; note how it behaves strangely after resizing the window
- * Note that the mouse coordinates on screen are physical coordinates, so their range changes when resizing the window; modify the demo to show virtual coordinates.
- * Change the code to be able to move the mouse coordinates label when you drag the mouse
- * Change the code so the keyboard display also shows the modifiers set at each time
+ * 改变 on_mouse_press 响应函数 并移除虚拟坐标映射; 注意现在窗口改变大小后文字行为的不同之处.
+ * 注意,显示在屏幕上的鼠标坐标是物理坐标, 因此,当窗口大小改变的时候他们的取值范围也会发生变化; 修改demo来显示出虚拟坐标.
+ * 修改代码,让显示鼠标坐标的标签能够被鼠标拖拽移动.
+ * 修改代码,让显示键盘按键的文字同时能够显示按下的功能键盘.
 
-Where to next?
---------------
+接下来我该从哪开始?
+--------------------------------
 
-The examples presented in this chapter should have given you enough
-information to get started writing simple arcade and point-and-click-based
-games.
+这一章给出的例子应该给你提供了足够你写一个简单的基于点击的游戏应用
+的信息.
 
-The remainder of this programming guide goes into quite technical detail
-regarding some of cocos's features.  While getting started, it's recommended
-that you skim the beginning of each chapter but not attempt to read through
-the entire guide from start to finish.
 
-To achieve optimal performance in your 2D
-applications you'll need to work with OpenGL directly.  The canonical
-references for OpenGL are `The OpenGL Programming Guide`_ and
-`The OpenGL Shading Language`_.
+这个编程指南的剩余部分将会非常详尽的描述技术细节
+并解释涉及的cocos的特性.  开始下一步之前, 推荐
+你先扫一遍每个章节的标题,不用每个章节都从头到尾地细读.
 
-Since cocos2d uses pyglet you shall also check `pyglet Programming Guide`_
-and `pyglet API Reference`_
+为了在2D游戏中获得更好的性能表现
+你也许需要在你的应用中直接调用OPENGL库.  OPENGL标准库手册见  `OpenGL编程指南`_ 和
+`OpenGL着色器语言`_.
 
-There are numerous examples of cocos2d applications in the ``samples/``
-directory of the documentation and source distributions.  Keep checking
-http://www.cocos2d.org/ for more examples and tutorials as they are written.
+因为cocos2d使用pyglet,所以你还可以参考 `pyglet编程指南`_
+和 `pyglet API参考`_
+
+在 cocos2d源代码和文档文件夹里的 ``samples/`` 文件夹中有很多cocos2d的程序范例
+.  关注
+http://www.cocos2d.org/ 以第一时间获得更多范例和快速指南.
 
 
 
 
 
-.. _The OpenGL Programming Guide: http://opengl.org/documentation/books/#the_opengl_programming_guide_the_official_guide_to_learning_opengl_version
-.. _The OpenGL Shading Language: http://opengl.org/documentation/books/#the_opengl_shading_language_2nd_edition
-.. _pyglet Programming Guide: http://pyglet.org/doc/programming_guide/
-.. _pyglet API Reference: http://pyglet.org/doc/api/
+.. _OpenGL编程指南: http://opengl.org/documentation/books/#the_opengl_programming_guide_the_official_guide_to_learning_opengl_version
+.. _OpenGL着色器语言: http://opengl.org/documentation/books/#the_opengl_shading_language_2nd_edition
+.. _pyglet编程指南: http://pyglet.org/doc/programming_guide/
+.. _pyglet API参考: http://pyglet.org/doc/api/
 .. _The pyglet Event Framework: http://www.pyglet.org/doc/programming_guide/the_pyglet_event_framework.html
