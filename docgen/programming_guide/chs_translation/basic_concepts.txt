@@ -1,50 +1,50 @@
-Basic Concepts
+基本概念
 ==============
 
+在进行cocos2d应用开发之前，你需要在这个部分了解一些基本概念。
 There are some basic concepts introduced in this library that you will
 need to know when developing a cocos2d application:
 
 .. contents::
     :local:
 
-Scenes
+Scenes（场景）
 ------
 
-A scene (implemented with the `Scene` object) is a more or less
-independent piece of the app workflow.
-Some people may call them "screens" or "stages". Your app can have
-many scenes, but only one of them is active at a given time.
+场景 (用 `Scene` 对象实现)在整个应用工作流中
+是一个相对独立的部分。
+它也被叫做 "screens"（屏） 或者 "stages"（舞台）. 你的游戏可能有多个场景
+但同一时间能处于激活状态的只有一个.
 
-For example, you could have a game with the following scenes:
-Intro, Menu, Level 1, Cutscene 1, Level 2, Winning cutscene,
-losing cutscene, High scores screen.
+例如，你的一个游戏可能包含如下场景:
+Intro（引入）, Menu（菜单）, Level 1（关卡1）, Cutscene 1（过场1）, Level 2（过场2）, Winning cutscene（过关过场）,
+losing cutscene（失败过场）, High scores screen（高分画面）.
 
-You can define every one of these scenes more or less as separate apps;
-there is a bit of glue between them containing the logic for connecting
-scenes (the intro goes to the menu when interrupted or finishing,
-Level 1 can lead you to the cutscene 1 if finished or to the losing
-cutscene if you lose, etc.).
+你可以多多少少将这些场景声明为独立的模块;
+你有许多逻辑或者方法将这些场景关联起来
+(引入结束或者被中断的时候将进入菜单界面,
+第一关通过会将你带入过关过场，失败则将你带到失败过场, 等等诸如此类.).
 
 .. figure:: scenes.png
 
-A scene is described in cocos2d as a tree of CocosNodes where the root is
-a `Scene` node, the most near descendants usually are `Layers`, and they
-hold and organize individual elements.
+cocos2d中的场景被描述为一个节点树(tree of CocosNodes)，树根为一个
+“场景（`Scene`）”对象节点，场景的直接下层通常是“层（`Layers`）”,
+层被用来组织相互独立的元素集合。
 
-Example for the main menu screen::
+一个主菜单场景的例子::
 
-	main_menu_scene : Scene node holding all the main menu elements
-		animated_background : Layer depicting an animated background
-			static_background : Sprite with a nice draw covering all the screen
-			far_trees : Layer holding the most distant trees
-				tree_1..tree_k : Sprites showing trees 
-			birds : Layer holding flying birds
-				bird_1..bird_n : Sprites showing birds
-			near_trees : Layer holding the most near trees
-				tree_1..tree_m : Sprites showing trees
-		main_menu : Menu, a Layer subclass provided by cocos that handles all the behavior
-					related to menu (key listening, highlight, select...)
-			item1 : MenuItem , 'play'
+	main_menu_scene : 主菜单场景，存放了所有元素的一个场景节点。
+		animated_background : 可动背景，一个渲染菜单动画的Layer节点。
+			static_background : 静态层，覆盖全屏的一张美图。
+			far_trees : 放置远处的树的Layer节点。
+				tree_1..tree_k : N棵树的精灵（Sprite） 
+			birds : 放置鸟的层（Layer）节点。
+				bird_1..bird_n : 代表鸟的精灵
+			near_trees : 控制最近那棵树的层（Layer）
+				tree_1..tree_m : 代表树的精灵（Sprite）
+		main_menu : 菜单, cocos提供的一个菜单类的子类，控制所有的菜单行为。
+					菜单相关 (键盘监听, 高亮, 选择功能...)
+			item1 : MenuItem对象 , 'play'
 			item2 : MenuItem , 'options'
 			item3 : MenuItem , 'quit'
 
