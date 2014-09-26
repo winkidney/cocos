@@ -2,8 +2,6 @@
 ==============
 
 在进行cocos2d应用开发之前，你需要在这个部分了解一些基本概念。
-There are some basic concepts introduced in this library that you will
-need to know when developing a cocos2d application:
 
 .. contents::
     :local:
@@ -44,43 +42,38 @@ cocos2d中的场景被描述为一个节点树(tree of CocosNodes)，树根为�
 				tree_1..tree_m : 代表树的精灵（Sprite）
 		main_menu : 菜单, cocos提供的一个菜单类的子类，控制所有的菜单行为。
 					菜单相关 (键盘监听, 高亮, 选择功能...)
-			item1 : MenuItem对象 , 'play'
-			item2 : MenuItem , 'options'
-			item3 : MenuItem , 'quit'
+			item1 : MenuItem对象 , 'play'（开始游戏）
+			item2 : MenuItem 对象, 'options'（选项）
+			item3 : MenuItem , 'quit'（退出游戏）
 
-There is also a family of `Scene` subclasses called transitions (implemented with
-the `TrasitionScene` object) which allow you to
-make transitions between two scenes (fade out/in, slide from a side, etc).
+也有一系列 `Scene`（场景） 的子类，由 `TransitionScene` (过渡场景)对象 实现，这个对象允许你在两个场景之间执行过渡切换
+ (淡入淡出， 幻灯切换等等).
 
-Since scenes are subclass of `CocosNode`, they can be transformed manually or
-by using actions.
+因为Scene对象是 `CocosNode`的子类,所以他们也能用指定的action（动作）切换.
 See :doc:`actions` for more detail about actions.
 
-Director
+Director（导演/控制器）
 --------
 
-The `Director` is the component which takes care about going back and forth
-between scenes.
+ `Director` （导演）是负责处理场景之间来回切换的组件。
 
-The `Director` is a shared (singleton) object. It knows which scene is currently
-active, and it handles a stack of scenes to allow things like "scene calls"
-(pausing a `Scene` and putting it on hold while other enters, and then returning
-to the original). The push, replacement or end of the current scene is made by director.
+ `Director` 是一个共享的单例对象. 它知道当前哪个场景是激活的, 它会记录一个包含很多 `Scene` 对象的栈以完成 "场景调度"的功能。
+(当需要载入别的场景的时候，暂停一个 `场景` 并将其挂起 , 然后再返回之前的场景). 推送，替换和结束场景的工作都是由 `Director`完成的。
 
-The `Director` is also responsible of initializing the main window.
+ `Director` 也负责初始化主窗口。
 
-Layers
+Layers（层）
 ------
 
-Layers helps you organize the scene in the back to front axis, by example
+Layers（层）帮助你组织在轴向上有前后关系的对象，例如
 
-	- background : a fixed draw of landscape
-	- far : decorative trees and birds
-	- middle : platforms
-	- near : player, enemies, coins
-	- HUD : Heads Up Display to show game stats like life, energy
+	- 背景 : 一张固定的风景图
+	- 远处 : 装饰用的鸟和树
+	- 中间 : 平台
+	- 近处 : 玩家，敌人和硬币
+	- HUD : Heads Up Display（状态栏） ，显示生命值和能量等状态。
 
-You can think layers as (usually) transparent sheets where the children are drawn, and the scene as the stack of sheets
+你可以认为层通常是用来绘制子节点的一个透明面，而Scene（场景）则是用来存放这些面的栈。
 
 .. image:: layers.png
 
